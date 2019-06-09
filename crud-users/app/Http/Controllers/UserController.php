@@ -19,6 +19,11 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email'//|unique:users'
+        ]);
+
         $User = User::create($request->all());
 
         return response()->json($User, 201);
@@ -26,6 +31,11 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email'//|unique:users'
+        ]);
+        
         $User = User::findOrFail($id);
         $User->update($request->all());
 
@@ -35,6 +45,6 @@ class UserController extends Controller
     public function delete($id)
     {
         User::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
+        return response('', 200);//Deleted Successfully
     }
 }
