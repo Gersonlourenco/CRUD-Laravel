@@ -4,41 +4,34 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 class AddEditForm extends React.Component {
   state = {
     id: 0,
-    first: '',
-    last: '',
-    email: '',
-    phone: '',
-    location: '',
-    hobby: ''
+    name: '',
+    email: ''
   }
 
   onChange = e => {
-    this.setState({[e.target.name]: e.target.value})
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   submitFormAdd = e => {
     e.preventDefault()
-    fetch('http://localhost:3000/crud', {
+    fetch('http://localhost:8000/api/user/', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        first: this.state.first,
-        last: this.state.last,
+        name: this.state.name,
         email: this.state.email,
-        phone: this.state.phone,
-        location: this.state.location,
-        hobby: this.state.hobby
       })
     })
       .then(response => response.json())
       .then(item => {
-        if(Array.isArray(item)) {
-          this.props.addItemToState(item[0])
+        if (item.id != null) {
+          this.props.addItemToState(item)
           this.props.toggle()
         } else {
-          console.log('failure')
+          alert("Falha ao adicionar");
+          console.log('Falha ao adicionar')
         }
       })
       .catch(err => console.log(err))
@@ -46,70 +39,51 @@ class AddEditForm extends React.Component {
 
   submitFormEdit = e => {
     e.preventDefault()
-    fetch('http://localhost:3000/crud', {
+    fetch('http://localhost:8000/api/user/' +  this.state.id, {
       method: 'put',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         id: this.state.id,
-        first: this.state.first,
-        last: this.state.last,
-        email: this.state.email,
-        phone: this.state.phone,
-        location: this.state.location,
-        hobby: this.state.hobby
+        name: this.state.name,
+        email: this.state.email
       })
     })
       .then(response => response.json())
       .then(item => {
-        if(Array.isArray(item)) {
+        if (item != null) {
           // console.log(item[0])
-          this.props.updateState(item[0])
+          this.props.updateState(item)
           this.props.toggle()
         } else {
-          console.log('failure')
+          alert("Falha ao atualizar");
+          console.log('Falha ao atualizar')
         }
       })
       .catch(err => console.log(err))
   }
 
-  componentDidMount(){
+  componentDidMount() {
     // if item exists, populate the state with proper data
-    if(this.props.item){
-      const { id, first, last, email, phone, location, hobby } = this.props.item
-      this.setState({ id, first, last, email, phone, location, hobby })
+    if (this.props.item) {
+      const { id, name, email } = this.props.item
+      this.setState({ id, name, email })
     }
   }
 
   render() {
     return (
-      <Form onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}>
+      <Form onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd} >
         <FormGroup>
-          <Label for="first">First Name</Label>
-          <Input type="text" name="first" id="first" onChange={this.onChange} value={this.state.first === null ? '' : this.state.first} />
+          <Label for="name">Nome</Label>
+          <Input type="text" name="name" id="name" onChange={this.onChange} value={this.state.name === null ? '' : this.state.name} required/>
         </FormGroup>
         <FormGroup>
-          <Label for="last">Last Name</Label>
-          <Input type="text" name="last" id="last" onChange={this.onChange} value={this.state.last === null ? '' : this.state.last}  />
+          <Label for="email">E-mail</Label>
+          <Input type="email" name="email" id="email" onChange={this.onChange} value={this.state.email === null ? '' : this.state.email} required />
         </FormGroup>
-        <FormGroup>
-          <Label for="email">Email</Label>
-          <Input type="email" name="email" id="email" onChange={this.onChange} value={this.state.email === null ? '' : this.state.email}  />
-        </FormGroup>
-        <FormGroup>
-          <Label for="phone">Phone</Label>
-          <Input type="text" name="phone" id="phone" onChange={this.onChange} value={this.state.phone === null ? '' : this.state.phone}  placeholder="ex. 555-555-5555" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="location">Location</Label>
-          <Input type="text" name="location" id="location" onChange={this.onChange} value={this.state.location === null ? '' : this.state.location}  placeholder="City, State" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="hobby">Hobby</Label>
-          <Input type="text" name="hobby" id="hobby" onChange={this.onChange} value={this.state.hobby}  />
-        </FormGroup>
-        <Button>Submit</Button>
+        <Button>Enviar</Button>
       </Form>
     );
   }
