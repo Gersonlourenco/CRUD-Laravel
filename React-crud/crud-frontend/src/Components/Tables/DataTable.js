@@ -5,24 +5,26 @@ import ModalForm from '../Modals/ModalForm'
 class DataTable extends Component {
 
   deleteItem = id => {
-    let confirmDelete = window.confirm('Delete item forever?')
-    if(confirmDelete){
-      fetch('http://localhost:3000/crud', {
-      method: 'delete',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id
-      })
-    })
-      .then(response => response.json())
-      .then(item => {
-        this.props.deleteItemFromState(id)
-      })
-      .catch(err => console.log(err))
-    }
+    let confirmDelete = window.confirm('Tem certeza que quer deletar?')
+    if (confirmDelete) {
+      fetch('http://localhost:8000/api/user/' + id, { method: 'delete' })
+        //.then(response => response.json())
+        //.then(item => {
+        .then(response => {
+          if (response.status === 200) {
+            this.props.deleteItemFromState(id)
+            //this.props.toggle()
+          } else {
+            alert("Falha ao Deletar");
+            console.log('Falha ao adicionar')
+          }
 
+        })
+        .catch(err => {
+          console.log(err)
+          alert("Falha ao excluir");
+        })
+    }
   }
 
   render() {
@@ -31,35 +33,27 @@ class DataTable extends Component {
       return (
         <tr key={item.id}>
           <th scope="row">{item.id}</th>
-          <td>{item.first}</td>
-          <td>{item.last}</td>
+          <td>{item.name}</td>
           <td>{item.email}</td>
-          <td>{item.phone}</td>
-          <td>{item.location}</td>
-          <td>{item.hobby}</td>
           <td>
-            <div style={{width:"110px"}}>
-              <ModalForm buttonLabel="Edit" item={item} updateState={this.props.updateState}/>
+            <div style={{ width: "110px" }}>
+              <ModalForm buttonLabel="Edit" item={item} updateState={this.props.updateState} />
               {' '}
               <Button color="danger" onClick={() => this.deleteItem(item.id)}>Del</Button>
             </div>
           </td>
         </tr>
-        )
-      })
+      )
+    })
 
     return (
       <Table responsive hover>
         <thead>
           <tr>
             <th>ID</th>
-            <th>First</th>
-            <th>Last</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Location</th>
-            <th>Hobby</th>
-            <th>Actions</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>

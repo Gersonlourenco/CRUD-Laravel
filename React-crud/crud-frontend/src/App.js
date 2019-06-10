@@ -10,7 +10,7 @@ class App extends Component {
   }
 
   getItems(){
-    fetch('http://localhost:3000/crud')
+    fetch('http://localhost:8000/api/user')//,  { mode: 'no-cors'}
       .then(response => response.json())
       .then(items => this.setState({items}))
       .catch(err => console.log(err))
