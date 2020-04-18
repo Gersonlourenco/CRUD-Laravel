@@ -19,3 +19,15 @@ If you discover a security vulnerability within Lumen, please send an e-mail to 
 ## License
 
 The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+## Rodando
+
+instalar composer
+
+instalar xampp, criar banco no MySql "crud-user"
+
+rodar comando para criar o banco: php artisan migrate
+
+baixar dependencias: composer update
+
+para rodar a app: php artisan serve
