@@ -30,4 +30,4 @@ rodar comando para criar o banco: php artisan migrate
 
 baixar dependencias: composer update
 
-para rodar a app: php artisan serve
+para rodar a app: php -S localhost:8000 -t public
