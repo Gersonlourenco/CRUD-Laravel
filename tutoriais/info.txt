@@ -1,0 +1,17 @@
+laravel 5.8
+
+POST->http://localhost:8000/api/user
+GET->http://localhost:8000/api/user
+DELETE->http://localhost:8000/api/user/1
+PUT->http://localhost:8000/api/user/1
+
+{
+        "name": "teste",
+        "email": "teste@teste.com",
+        "created_at": "2019-06-04 03:00:00",
+        "updated_at": "2019-06-19 03:00:00"
+    }
+
+rodar---
+php -S localhost:8000 -t public
+npm start
